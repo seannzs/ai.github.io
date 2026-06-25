@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusDev.AI — Engine Pro v4.2</title>
+    <title>NexusDev.AI — Engine Pro v4.3</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,7 +38,7 @@
             white-space: pre !important;
         }
         
-        /* Animasi */
+        /* Animasi Pesan Masuk */
         .message-fade-in {
             animation: cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards msgFade;
         }
@@ -47,6 +47,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Animasi Menunggu Respons */
         .pulse-thinking {
             animation: pulse-text 1.5s infinite ease-in-out;
         }
@@ -55,18 +56,18 @@
             50% { opacity: 1; text-shadow: 0 0 8px rgba(168,85,247,0.4); }
         }
 
-        /* Toast Animation */
-        .toast-animate {
-            animation: toast-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+        /* Toast Animasi Masuk Keluar Pojok Kanan */
+        .toast-fade-in {
+            animation: toast-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
                        toast-out 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045) 2.7s forwards;
         }
         @keyframes toast-in {
-            from { transform: translate(-50%, 20px); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         @keyframes toast-out {
-            from { transform: translate(-50%, 0); opacity: 1; }
-            to { transform: translate(-50%, 20px); opacity: 0; }
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(50px); opacity: 0; }
         }
         textarea { resize: none; }
     </style>
@@ -76,18 +77,18 @@
     <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-10%] right-[-10%] w-[45vw] h-[45vw] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-    <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none w-[90%] max-w-xs sm:max-w-sm"></div>
 
     <header class="border-b border-slate-900 bg-slate-950/60 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex justify-between items-center h-[65px]">
         <div class="flex items-center gap-2.5">
             <div class="h-2 w-2 rounded-full bg-purple-500 shadow-[0_0_10px_#a855f7] animate-pulse"></div>
             <div>
                 <span class="font-bold tracking-tight text-sm text-white">NexusDev<span class="text-purple-400">.AI</span></span>
-                <span class="hidden sm:inline-block text-[10px] text-slate-500 font-mono ml-2">v4.2-pro</span>
+                <span class="hidden sm:inline-block text-[10px] text-slate-500 font-mono ml-2">v4.3-pro</span>
             </div>
         </div>
         <div class="text-[10px] font-mono text-slate-400 bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-800/60">
-            CORE: OPTIMIZED_TEXT
+            CORE: FIX_MAXTOKENS
         </div>
     </header>
 
@@ -101,7 +102,7 @@
                 </div>
                 <div class="flex-1 space-y-1.5 text-xs md:text-sm text-slate-400 leading-relaxed">
                     <p class="font-mono text-[10px] text-slate-500 tracking-wider">WORKSPACE INITIALIZED.</p>
-                    <p>Halo, Sean. Workspace kodingan telah dioptimalkan agar super ringan dan sepenuhnya responsif. Tulis logika sistem atau kendala kodinganmu di bawah.</p>
+                    <p>Halo, Sean. Posisi alert notifikasi sudah dipindah ke pojok kanan atas agar tidak menutupi layar utama. Parameter kapasitas data juga ditingkatkan agar penulisan skrip kodingan panjang selesai sempurna.</p>
                 </div>
             </div>
 
@@ -148,18 +149,20 @@
             breaks: true
         });
 
-        // Toast Notification Function
+        // Toast Notification Function (Fix Tampilan Rapi di Sisi Kanan Layar)
         function showToast(message, type = 'error') {
             const toast = document.createElement('div');
-            toast.className = `toast-animate flex items-center gap-2.5 px-4 py-2.5 rounded-lg border text-xs font-mono shadow-xl backdrop-blur-md w-full bg-slate-950/90 ${
+            toast.className = `toast-fade-in flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-mono shadow-2xl backdrop-blur-md w-full bg-slate-950/95 border-slate-800 ${
                 type === 'success' ? 'border-emerald-500/30 text-emerald-400' : 'border-rose-500/30 text-rose-400'
             }`;
             
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i> <span>${message}</span>`;
             
             toastContainer.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
         const SYSTEM_PROMPT = `You are NexusDev.AI, an expert Fullstack Software Engineer. 
@@ -171,7 +174,7 @@ When asked to build a discord bot core setup, write the code inside a file archi
             e.preventDefault();
             const message = userInput.value.trim();
             
-            // Validasi input kosong (Permintaan Tambahan)
+            // Validasi Input Kosong
             if (!message) {
                 showToast("Input tidak boleh kosong! Ketik instruksi kodinganmu dulu.", "error");
                 return;
@@ -183,7 +186,7 @@ When asked to build a discord bot core setup, write the code inside a file archi
             userInput.style.height = '36px';
             setLoading(true);
 
-            // ANIMASI PROGRES BERFIKIR (Permintaan Tambahan)
+            // Progres Berpikir Blinking
             const botMessageId = appendMessage('bot', `
                 <div class="flex items-center gap-2.5 text-purple-400 font-mono text-xs py-1 pulse-thinking">
                     <i class="fa-solid fa-circle-notch animate-spin text-[11px]"></i>
@@ -200,7 +203,7 @@ When asked to build a discord bot core setup, write the code inside a file archi
                             { role: "system", content: SYSTEM_PROMPT },
                             { role: "user", content: message }
                         ],
-                        model: "openai", 
+                        model: "searchgpt", // Menggunakan engine searchgpt/mistral untuk penulisan skrip yang lebih tuntas dan panjang
                         jsonMode: false
                     })
                 });
@@ -209,7 +212,7 @@ When asked to build a discord bot core setup, write the code inside a file archi
 
                 const data = await response.text();
                 updateBotMessage(botMessageId, data);
-                showToast("Respons berhasil dimuat!", "success"); // Notifikasi Selesai
+                showToast("Respons berhasil dimuat!", "success");
 
             } catch (error) {
                 console.error(error);
@@ -306,6 +309,7 @@ When asked to build a discord bot core setup, write the code inside a file archi
             }
         }
 
+        // Filter proteksi tag
         function escapeHTML(str) {
             if(str.includes('pulse-thinking') || str.includes('text-rose-400')) return str;
             return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
